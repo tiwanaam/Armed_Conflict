@@ -40,5 +40,11 @@ print(is.numeric(cleandat$Year))
 
 library(usethis)
 
+usethis::use_git_config(user.name = "tiwanaam", user.email = "amrit.tiwana@mail.utoronto.ca")
+
+# Generate a git situation-report to confirm your user name and email
+
+usethis::git_sitrep()
+
 usethis::use_git() 
 usethis::use_github()
