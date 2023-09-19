@@ -36,6 +36,10 @@ tail(cleandat, 20)
 
 print(is.numeric(cleandat$Year))
 
+# Output results into different sub-folder
+
+write.csv(cleandat, here("data", "clean_maternalmortality_data.csv"), row.names = FALSE)
+
 # PUSH TO GITHUB
 
 library(usethis)
@@ -45,6 +49,8 @@ usethis::use_git_config(user.name = "tiwanaam", user.email = "amrit.tiwana@mail.
 # Generate a git situation-report to confirm your user name and email
 
 usethis::git_sitrep()
+
+# Push project to github
 
 usethis::use_git() 
 usethis::use_github()
