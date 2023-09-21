@@ -38,19 +38,19 @@ print(is.numeric(cleandat$Year))
 
 # Output results into different sub-folder
 
-write.csv(cleandat, here("data", "clean_maternalmortality_data.csv"), row.names = FALSE)
+write.csv(cleandat, here("data", "clean_maternalmortality.csv"), row.names = FALSE)
 
 # PUSH TO GITHUB
 
-library(usethis)
+# library(usethis)
 
-usethis::use_git_config(user.name = "tiwanaam", user.email = "amrit.tiwana@mail.utoronto.ca")
+# usethis::use_git_config(user.name = "tiwanaam", user.email = "amrit.tiwana@mail.utoronto.ca")
 
 # Generate a git situation-report to confirm your user name and email
 
-usethis::git_sitrep()
+# usethis::git_sitrep()
 
 # Push project to github
 
-usethis::use_git() 
-usethis::use_github()
+# usethis::use_git() 
+# usethis::use_github()
