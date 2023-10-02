@@ -24,6 +24,14 @@ names(conflict_data)[names(conflict_data) == "year"] <- "Year"
 conflict_data <- conflict_data %>%
   mutate(armed_conflict = ifelse(best > 0, 1, 0))
 
+conflict_data %>%
+  # Outcome 1: Binary indicator of armed conflict (0 if <25, 1 if >= 25 battle related deaths) for each country-year
+  group_by(ISO, Year) |>
+  summarise(best = sum(best)) |>
+  mutate(armed_conflict = ifelse(best < 25, 0, 1)) |>
+  ungroup() |>
+  mutate(Year = Year + 1) -> conflict_data
+
 # View the first 20 rows of the modified data
 
 head(conflict_data, 20)

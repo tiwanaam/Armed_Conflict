@@ -23,7 +23,7 @@ names(covariate_data)[names(covariate_data) == "year"] <- "Year"
 # Source the R scripts
 
 source(here("scripts", "cleaning_armedconflict_data.R"))
-source(here("Scripts", "cleaning_disaster_data.R"))
+source(here("scripts", "cleaning_disaster_data.R"))
 source(here("scripts", "cleaning_function.R"))
 
 # Merge all data frames in list
@@ -43,5 +43,9 @@ final_data <- final_data |>
 # Output results into different sub-folder
 
 write.csv(final_data, file = here("data", "final_data.csv"), row.names = FALSE)
+
+dim(final_data)
+names(final_data)
+length(unique(final_data$ISO))
 
 # Push project to github
