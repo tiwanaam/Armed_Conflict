@@ -22,7 +22,6 @@ library(tidyverse)
 cleandat <- rawdat %>%
   filter(Year >= 2000 & Year <= 2019, Disaster.Type %in% c("Earthquake", "Drought"))
 
-
 # Subset the data set to only include the following variables: Year, ISO, Disaster.type.
 
 cleandat <- cleandat %>%
@@ -47,5 +46,9 @@ cleandat <- cleandat %>%
 # Print the first 10 rows of the resulting summarized data frame
 
 head(cleandat, 10)
+
+# Output results into different sub-folder
+
+write.csv(cleandat, here("data", "clean_disaster_data.csv"), row.names = FALSE)
 
 # Push to github

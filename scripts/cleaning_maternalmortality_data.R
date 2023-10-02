@@ -1,10 +1,11 @@
 #-----------------------------------------------------------------
 # Author: Amrit Tiwana
-# Last updated: 2023-09-18
+# Last updated: 2023-09-25
 # What: Read in raw data, 
 #         subset data, 
 #         convert dataset into long format, 
-#         write new clean data
+#         write new clean data,
+#         create function to clean other datasets
 #----------------------------------------------------------------
 
 # BEGIN R PROJECT
@@ -38,7 +39,7 @@ print(is.numeric(cleandat$Year))
 
 # Output results into different sub-folder
 
-write.csv(cleandat, here("data", "clean_maternalmortality.csv"), row.names = FALSE)
+write.csv(cleandat, here("data", "clean_maternalmortality_data.csv"), row.names = FALSE)
 
 # PUSH TO GITHUB
 
