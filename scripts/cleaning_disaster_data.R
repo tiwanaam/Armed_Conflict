@@ -20,7 +20,7 @@ library(tidyverse)
 # Filter the data to include years 2000–2019 and disaster types "Earthquake" and "Drought"
 
 cleandat <- rawdat %>%
-  filter(Year >= 2000 & Year <= 2019, Disaster.Type %in% c("Earthquake", "Drought"))
+  dplyr::filter(Year >= 2000 & Year <= 2019, Disaster.Type %in% c("Earthquake", "Drought"))
 
 # Subset the data set to only include the following variables: Year, ISO, Disaster.type.
 
