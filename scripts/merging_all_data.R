@@ -43,3 +43,9 @@ final_data <- final_data |>
 # Output results into different sub-folder
 
 write.csv(final_data, file = here("data", "final_data.csv"), row.names = FALSE)
+
+# Push project to github
+
+usethis::use_git() 
+usethis::use_github()
+usethis::use_git_remote("Armed_Conflict", url = NULL, overwrite = TRUE)`
