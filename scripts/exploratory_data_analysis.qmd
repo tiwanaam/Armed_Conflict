@@ -1,0 +1,30 @@
+---
+title: "Exploratory Data Analysis"
+format: html
+editor: visual
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+source("../.Rprofile")
+```
+
+## First Few Observations
+
+```{r}
+head(finaldata, 25)
+```
+
+## GDP
+
+```{r}
+finaldata |>
+  ggplot(aes(x = GDP)) +
+  geom_histogram(bins = 30) +
+  scale_x_log10()
+  labs(y = "Number of Observations", x = "GDP") + 
+  theme_bw()
+```
+
+GDP is normally distributed.
