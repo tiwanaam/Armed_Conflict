@@ -1,5 +1,6 @@
 # Load all required packages
 
-library(here)
 library(tidyverse)
+library(here)
 library(countrycode)
+library(kableExtra)
