@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------
 # Author: Amrit Tiwana
-# Last updated: 2023-09-25
-# What: preparing mortality data sets
+# Last updated: 2023-10-05
+# What: cleaning mortality data sets
 #----------------------------------------------------------------
 
 # BEGIN R PROJECT
@@ -19,6 +19,10 @@ neonatmor0 <- read.csv(here("data", "original", "neonatalmortality.csv"), header
 under5mor0 <- read.csv(here("data", "original", "under5mortality.csv"), header = TRUE)
 
 # Make a function to clean the data
+  # subset data to have only the variables Country.Name and X2000 - X2019
+  # convert data set from wide format into a long format 
+    # select columns X2000 to X2019, change name of variable to year, remove prefix X, change values to mor
+  # Make sure year variable is stored as numeric
 
 cleanfun <- function(dataname, varname){
   dataname |>
