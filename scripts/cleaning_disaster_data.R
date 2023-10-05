@@ -1,54 +1,39 @@
 #-----------------------------------------------------------------
 # Author: Amrit Tiwana
-# Last updated: 2023-09-21
-# What: Read in raw data, 
-#         filter data,
-#         subset data, 
-#         create dummy variables and group data, 
-#         write new clean data
+# Last updated: 2023-10-05
+# What: cleaning disaster data set
 #----------------------------------------------------------------
+
+# Set working directory
 
 library(here)
 here()
 
-# Read in the raw data
+# Read in the original data
 
-rawdat <- read.csv(here("original", "disaster.csv"), header = TRUE)
+disaster0 <- read.csv(here("data", "original", "disaster.csv"), header = TRUE)
 
-library(tidyverse)
+# Clean the data
+  # subset to only include years 2000 - 2019
+  # subset to only include types "Earthquake" and "Drought"
+  # subset to only include the variables: Year, ISO, Distaster.Type
+  # create dummy variables drought and earthquake
+  # create data set where only one row of observations exists for each country and each year
 
-# Filter the data to include years 2000–2019 and disaster types "Earthquake" and "Drought"
-
-cleandat <- rawdat %>%
-  dplyr::filter(Year >= 2000 & Year <= 2019, Disaster.Type %in% c("Earthquake", "Drought"))
-
-# Subset the data set to only include the following variables: Year, ISO, Disaster.type.
-
-cleandat <- cleandat %>%
-  select(Year, ISO, Disaster.Type)
-
-# Create dummy variables 'drought' and 'earthquake'
-
-cleandat <- cleandat %>%
-  mutate(drought = ifelse(Disaster.Type == "Drought", 1, 0),
-         earthquake = ifelse(Disaster.Type == "Earthquake", 1, 0))
-
-# Print the first 10 rows of the resulting data frame
-
-head(cleandat, 10)
-
-# Group the data by 'Year' and 'ISO' and calculate the sum of 'drought' and 'earthquake' for each group
-
-cleandat <- cleandat %>%
-  group_by(Year, ISO) %>%
-  summarize(drought = sum(drought), earthquake = sum(earthquake))
-
-# Print the first 10 rows of the resulting summarized data frame
-
-head(cleandat, 10)
+disaster0 |>
+  dplyr::filter(Year >= 2000 & Year <= 2019) |>
+  dplyr::filter(Disaster.Type %in% c("Earthquake", "Drought")) |>
+  dplyr::select(Year, ISO, Disaster.Type) |>
+  rename(year = Year) |>
+  group_by(year, ISO) |>
+  mutate(drought0 = ifelse(Disaster.Type == "Drought", 1, 0),
+         earthquake0 = ifelse(Disaster.Type == "Earthquake", 1, 0)) |>
+  summarize(drought = max(drought0),
+            earthquake = max(earthquake0)) |> 
+  ungroup() -> disasterdata
 
 # Output results into different sub-folder
 
-write.csv(cleandat, here("data", "clean_disaster_data.csv"), row.names = FALSE)
+write.csv(disasterdata, here("data", "disasterdata.csv"), row.names = FALSE)
 
 # Push to github
