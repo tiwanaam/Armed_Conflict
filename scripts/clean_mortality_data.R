@@ -50,10 +50,6 @@ list <- list(matmor, infantmor, neonatmor, under5mor)
 
 list |> reduce(full_join, by = c('Country.Name', 'year')) -> mortalitydata
 
-# Output results into different sub-folder
-
-write.csv(mortalitydata, here("data", "mortalitydata.csv"), row.names = FALSE)
-
 # Push to GitHub
 
 # library(usethis)
@@ -62,3 +58,22 @@ write.csv(mortalitydata, here("data", "mortalitydata.csv"), row.names = FALSE)
 # usethis::git_sitrep()
 # usethis::use_git() 
 # usethis::use_github()
+
+# add ISO-3 country code to data
+  # specify the variable that includes the country names first
+  # specify the format of the country names
+  # specify the format you want to convert the countries into
+  # remove the Country.Name variable from the data set
+
+library(countrycode)
+
+mortalitydata$ISO <- countrycode(mortalitydata$Country.Name, 
+                          origin = "country.name", 
+                          destination = "iso3c")
+
+mortalitydata <- mortalitydata |>
+  dplyr::select(-Country.Name)
+
+# Output results into different sub-folder
+
+write.csv(mortalitydata, here("data", "mortalitydata.csv"), row.names = FALSE)
