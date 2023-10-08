@@ -10,10 +10,14 @@ editor: visual
 source("../.Rprofile")
 ```
 
+```{r}
+load(here("data", "finaldata.csv"))
+```
+
 ## First Few Observations
 
 ```{r}
-head(finaldata, 25)
+head(finaldata)
 ```
 
 ## GDP
