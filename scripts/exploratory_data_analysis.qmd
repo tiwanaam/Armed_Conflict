@@ -11,24 +11,22 @@ source("../.Rprofile")
 ```
 
 ```{r}
-load(here("data", "finaldata.csv"))
+data <- read.csv(here("data", "finaldata.csv"), header = TRUE)
 ```
 
 ## First Few Observations
 
 ```{r}
-head(finaldata)
+head(data)
 ```
 
 ## GDP
 
 ```{r}
-finaldata |>
+data |>
   ggplot(aes(x = GDP)) +
   geom_histogram(bins = 30) +
   scale_x_log10()
-  labs(y = "Number of Observations", x = "GDP") + 
-  theme_bw()
 ```
 
 GDP is normally distributed.
