@@ -1,0 +1,68 @@
+---
+title: "Table 1 Baseline Characteristics"
+format: pdf
+editor: visual
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+source("../.Rprofile")
+```
+
+```{r}
+#| echo: FALSE
+data <- read.csv(here("data", "finaldata.csv"), header = TRUE)
+```
+
+```{r}
+baselinedata <- data %>%
+  dplyr::filter(year == 2000)
+baselinedata$armconflictfactor <- factor(baselinedata$armconflict, levels = c(0,1), labels = c("No armed conflict", "Armed conflict"))
+baselinedata$droughtfactor <- factor(baselinedata$drought, levels = c(1,0), labels = c("Yes", "No"))
+baselinedata$earthquakefactor <- factor(baselinedata$earthquake, levels = c(1,0), labels = c("Yes", "No"))
+baselinedata$OECDfactor <- factor(baselinedata$OECD, levels = c(1,0), labels = c("Yes", "No"))
+
+label(baselinedata$GDP)             <- "GDP per capita"
+label(baselinedata$OECDfactor)      <- "OECD member"
+label(baselinedata$OECD)            <- "OECD member"
+label(baselinedata$popdens)         <- "Population density"
+label(baselinedata$urban)           <- "Urban residence"
+label(baselinedata$agedep)          <- "Age dependency ratio"
+label(baselinedata$male_edu)        <- "Male education"
+label(baselinedata$temp)            <- "Mean annual temperature"
+label(baselinedata$earthquakefactor)<- "Earthquake"
+label(baselinedata$earthquake)      <- "Earthquake"
+label(baselinedata$droughtfactor)   <- "Drought"
+label(baselinedata$drought)         <- "Drought"
+label(baselinedata$armconflict)     <- "Armed conflict"
+label(baselinedata$totaldeath)      <- "Total number of deaths"
+label(baselinedata$matmor)          <- "Maternal mortality"
+label(baselinedata$infantmor)       <- "Infant mortality"
+label(baselinedata$neonatmor)       <- "Neonatal mortality"
+label(baselinedata$under5mor)       <- "Under 5 mortality"
+label(baselinedata$armconflictfactor) <- "Armed conflict"
+
+units(baselinedata$GDP)       <- "USD"
+units(baselinedata$popdens)   <- "% of population living in a density of >1,000 people/km^2"
+
+
+table1 <- table1(~ GDP + OECDfactor + popdens + urban + agedep + male_edu + temp + earthquakefactor + droughtfactor + totaldeath + matmor + infantmor + neonatmor + under5mor | armconflictfactor, data = baselinedata,
+        render.continuous = c(.="Median [Min, Max]"),
+       overall=c(left="Total"))
+print(table1)
+```
+
+```{r}
+#| echo: FALSE
+t1kable(table1) %>%
+  add_header_above(c(" "=2, "Armed conflict" = 2))
+```
+
+```{r}
+#| echo: FALSE
+ft1 <- t1flex(table1) 
+add_header_row(ft1,
+  values = c("", "Armed conflict"),
+  colwidths = c(2, 2))
+```
