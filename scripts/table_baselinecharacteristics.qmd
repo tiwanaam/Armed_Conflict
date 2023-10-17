@@ -1,12 +1,13 @@
 ---
 title: "Table 1 Baseline Characteristics"
-format: pdf
+format: html
 editor: visual
 ---
 
 ```{r}
 #| label: load-packages
 #| include: false
+#| #| echo: FALSE
 source("../.Rprofile")
 ```
 
@@ -50,17 +51,18 @@ units(baselinedata$popdens)   <- "% of population living in a density of >1,000 
 table1 <- table1(~ GDP + OECDfactor + popdens + urban + agedep + male_edu + temp + earthquakefactor + droughtfactor + totaldeath + matmor + infantmor + neonatmor + under5mor | armconflictfactor, data = baselinedata,
         render.continuous = c(.="Median [Min, Max]"),
        overall=c(left="Total"))
-print(table1)
 ```
 
 ```{r}
-#| echo: FALSE
+table1
+```
+
+```{r}
 t1kable(table1) %>%
   add_header_above(c(" "=2, "Armed conflict" = 2))
 ```
 
 ```{r}
-#| echo: FALSE
 ft1 <- t1flex(table1) 
 add_header_row(ft1,
   values = c("", "Armed conflict"),
