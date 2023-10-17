@@ -48,9 +48,7 @@ units(baselinedata$GDP)       <- "USD"
 units(baselinedata$popdens)   <- "% of population living in a density of >1,000 people/km^2"
 
 
-table1 <- table1(~ GDP + OECDfactor + popdens + urban + agedep + male_edu + temp + earthquakefactor + droughtfactor + totaldeath + matmor + infantmor + neonatmor + under5mor | armconflictfactor, data = baselinedata,
-        render.continuous = c(.="Median [Min, Max]"),
-       overall=c(left="Total"))
+table1 <- table1(~ GDP + OECDfactor + popdens + urban + agedep + male_edu + temp + earthquakefactor + droughtfactor + totaldeath + matmor + infantmor + neonatmor + under5mor | armconflictfactor, data = baselinedata, render.continuous = c(.="Median [Min, Max]"), overall=c(left="Total"))
 ```
 
 ```{r}
