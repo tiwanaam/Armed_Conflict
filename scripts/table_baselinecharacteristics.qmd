@@ -17,6 +17,7 @@ data <- read.csv(here("data", "finaldata.csv"), header = TRUE)
 ```
 
 ```{r}
+#| echo: FALSE
 baselinedata <- data %>%
   dplyr::filter(year == 2000)
 baselinedata$armconflictfactor <- factor(baselinedata$armconflict, levels = c(0,1), labels = c("No armed conflict", "Armed conflict"))
