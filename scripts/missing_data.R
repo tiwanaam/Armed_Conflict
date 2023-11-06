@@ -9,7 +9,7 @@
 library(here)
 finaldata <- read.csv(here("data", "finaldata.csv"), header = TRUE)
 
-# Load package
+# Load packages
 
 library(naniar)
 library(VIM)
@@ -18,7 +18,7 @@ library(texreg)
 library(mice)
 library(tidyverse)
 
-# Use one of the missing data visulization pacakges to describe the patterns of missing data 
+# Use a missing data visualization packages to describe the patterns of missing data 
 
 naniar::vis_miss(finaldata)
 VIM::aggr(finaldata, numbers = TRUE, prop = c(TRUE, FALSE))
@@ -26,7 +26,6 @@ VIM::aggr(finaldata, numbers = TRUE, prop = c(TRUE, FALSE))
 # Create linear models for each outcome
 
 finaldata$popdens100 <- finaldata$popdens / 100
-
 finaldata$GDP1000 <- finaldata$GDP / 1000
 
 preds <- as.formula(" ~ armconflict + earthquake + temp + drought + male_edu + agedep + urban + popdens100 + GDP1000 + OECD + ISO + as.factor(year)")
@@ -54,20 +53,47 @@ screenreg(list(matmormod, infantmormod, neonatmormod, under5mormod),
 
 # Use the mice package to multiply impute the final data with 𝑚 = 10 imputations
 
-finaldata <- finaldata %>%
-  select(-c("country_name", "region", "ISO", "GDP", "popdens"))
-
 finaldata$ISOfac <- as.numeric(factor(finaldata$ISO))
 
-meth[c("GDP", "popdens", "urban", "male_educ", "temp", "matmor", "infantmor", "neonatmor", "under5mor", "popdens100", "GDP1000")] <- "2l.bin"
+finaldata2 <- finaldata %>%
+  select(-c("country_name", "region", "ISO", "GDP", "popdens"))
+
+# Look at the default methods 
+
+mi0 <- mice(finaldata2, seed = 1, m = 1, maxit = 0, print = F)
+mi0$method
+
+# Apply 2l.pan method
+
+pred <- mi0$predictorMatrix
+pred
+
+pred[c("urban", "male_educ", "temp", "matmor", "infantmor", "neonatmor", "under5mor", "popdens100", "GDP1000"), "ISOfac"] <- -2
+pred
+
+meth[c("GDP","popdens","urban","male_edu","temp","mat.mor",
+       "infant.mor","neo.mor","under5.mor")] <- "2l.pan"
+
+# run mice 
+start.time <- Sys.time()
+mice.multi.out  <- mice(data_imp, seed = 100, m = 10, maxit = 5,
+                        method = meth,
+                        predictorMatrix = pred, print = F)
+
+
+# Apply 2l.pan to the level 1 variables
+
+method[c("GDP", "popdens", "urban", "male_educ", "temp", "matmor", "infantmor", "neonatmor", "under5mor", "popdens100", "GDP1000")] <- "2l.pan"
+
+# Set seed for reproducibility 
 
 set.seed(100) 
 
+# Run the mice
+
 start.time <- Sys.time()
 
-mice.out <- mice(finaldata, seed = 1, m = 10, method=c("","", "", "pmm", "", "pmm","pmm", "pmm", "pmm", "pmm", "pmm", "", "", "", "", "pmm", "pmm", ""), 
-                 maxit = 20, 
-                 print = F)
+mice.out <- mice(finaldata, seed = 1, m = 10, method=c("","", "", "2l.pan", "", "2l.pan","2l.pan", "2l.pan", "2l.pan", "2l.pan", "2l.pan", "", "", "", "", "2l.pan", "2l.pan", ""), maxit = 20, print = F)
 
 mice.out$method
 class(finaldata$GDP1000)
@@ -75,9 +101,6 @@ class(finaldata$GDP1000)
 end.time <- Sys.time()
 
 end.time - start.time
-
-mi0 <- mice(finaldata, seed = 1, m = 1, maxit = 0, print = F)
-mi0$method
 
 # Plot the mice 
 plot(mice.out)
