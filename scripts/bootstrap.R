@@ -238,3 +238,5 @@ under5_results <- data.frame(
 
 results <- bind_rows(mat_results, infant_results, neonat_results, under5_results)
 print(results)
+
+# The mean difference by armed conflict exposure is greatest for maternal mortality, followed by under 5 mortality, infant mortality, and neonatal mortality.
